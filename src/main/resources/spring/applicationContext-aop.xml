@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--配置扫描所有bean-->
+    <bean id="aspect" class="com.zongcc.aop.AopAspect"/>
+    <bean id="testService" class="com.zongcc.aop.TestService"/>
+    <!--<bean id="beforeAdvice" class="com.zongcc.aop.BeforeAdvice"/>-->
+    <!--<bean id="helloAspect" class="com.zongcc.aop.HelloAspect"/>-->
+
+    <aop:config>
+        <aop:pointcut id="pointcut" expression="execution(* com.zongcc.aop..*.*(..))"/>
+        <aop:aspect ref="aspect">
+            <aop:before method="beforeAdvice" pointcut-ref="pointcut"/>
+           <!-- <aop:after method="afterAdvice" pointcut-ref="pointcut"/>
+            <aop:after-returning method="afterReturningAdvice" pointcut-ref="pointcut"/>
+            <aop:after-throwing method="afterThrowingAdvice" pointcut-ref="pointcut"/>
+            <aop:around  method="aroundAdvice" pointcut-ref="pointcut"/>-->
+        </aop:aspect>
+<!--
+        <aop:aspect ref="aspect">
+            <aop:before method="beforeAdvice(java.lang.String)"
+                        pointcut="execution(* com.zongcc.aop..*.*(..)) and args(param)" arg-names="param" />
+            <aop:after-returning pointcut="execution(* com.zongcc.aop..*.*(..))"
+                                 method="afterReturningAdvice(java.lang.Object)"
+                                 arg-names="retVal"
+                                 returning="retVal"/>
+
+            <aop:after-throwing pointcut="execution(* com.zongcc.aop..*.*(..))"
+                                method="afterThrowingAdvice(java.lang.Exception)"
+                                arg-names="exception"
+                                throwing="exception"/>
+            <aop:after pointcut="execution(* com.zongcc.aop..*.*(..))"
+                       method="afterFinallyAdvice"/>
+
+            <aop:around pointcut="execution(* com.zongcc.aop..*.*(..))"
+                        method="aroundAdvice"/>
+
+        </aop:aspect>-->
+        
+<!--
+        <aop:advisor advice-ref="beforeAdvice" pointcut="execution(* com.zongcc.aop..*.*(..))" />
+-->
+
+    </aop:config>
+
+    <!--启用对@AspectJ的支持-->
+  <!--  <aop:aspectj-autoproxy/>
+-->
+</beans>

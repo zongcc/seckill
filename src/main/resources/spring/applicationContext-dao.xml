@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--扫描相关配置-->
+    <context:property-placeholder location="classpath*:*.properties"/>
+
+    <!--c3p0连接池数据库配置-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="${jdbc.driverClassName}"/>
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="user" value="${jdbc.user}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <!--c3p0连接池属性配置-->
+        <property name="maxPoolSize" value="100"/>
+        <property name="minPoolSize" value="10"/>
+        <!--关闭连接后不自动提交-->
+        <property name="autoCommitOnClose" value="false"/>
+        <!--连接超时时间-->
+        <!--<property name="checkoutTimeout" value="1000"/>-->
+        <!--连接失败尝试次数-->
+        <property name="acquireRetryAttempts" value="2"/>
+    </bean>
+
+    <!--sqlSessionFactory配置-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+        <property name="typeAliasesPackage" value="com.zongcc.model"/>
+    </bean>
+    <!--扫描dao包注入spring容器-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.zongcc.dao"/>
+        <!--执行顺序问题，只有当使用mybatis启动所有配置，防止dataSource中配置文件没有启动-->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+
+</beans>

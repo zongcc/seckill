@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+         http://www.springframework.org/schema/aop
+         http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--配置springmvc-->
+    <!--开始SpringMVC注解模式
+        （1）自动注册DefaultAnnotationHandlerMapping,AnnotationMethodHandlerAdapter
+        (2)提供一系列数据绑定，数字和日期格式化，xml和json默认支持
+    -->
+    <mvc:annotation-driven/>
+
+    <!--静态资源默认servlet配置-->
+    <!--1.加入对静态资源处理：js,jpg
+        2.允许使用"/" 对整体的映射
+     -->
+    <mvc:default-servlet-handler/>
+
+    <!--将静态资源的处理工作由Spring MVC框架自己处理-->
+    <!--允许静态资源放在任何地方，如WEB应用根目录下，WEB-INF目录下、类路径下等-->
+    <!--由于location属性是Resources类型，多个路劲用逗号或者分号隔开-->
+    <mvc:resources mapping="/resources/**" location="/resources/"/>
+
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <!--配置jsp 显示viewResolver-->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--配置扫描所有controller-->
+    <context:component-scan base-package="com.zongcc.controller" >
+<!--
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+-->
+            </context:component-scan>
+
+</beans>

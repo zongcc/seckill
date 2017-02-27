@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         version="2.5">
+
+    <display-name>seckill</display-name>
+
+    <servlet>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring/applicationContext-*.xml</param-value>
+        </init-param>
+        <!--启动顺序必须要加表示启动容器时初始化该Servlet-->
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- <filter>
+         <filter-name>securityFilter</filter-name>
+         <filter-class>com.zongcc.security.SecurityFilter</filter-class>
+         <init-param>
+             <param-name>CanDo</param-name>
+             <param-value>
+                 /editor/login.do,
+                 /editor/index.do,
+                 /editor/welcome.do,
+                 /editor/logout.do,
+                 /project/signUp.do,
+                 /project/addLead.do,
+                 /iframe_test.html,
+                 /memcache/getValueByKey.do,
+                 /memcache/delValueByKey.do,
+                 /project/getMaxActivtyLogId.do,
+                 /gouche/checkUser.do,
+                 /gouche/uploadFile.do,
+                 /gouche/savePictures.do,
+                 /gouche/saveInvoice.do,
+                 /project/getActivtyLogIdListByTime.do
+             </param-value>
+         </init-param>
+         <init-param>
+             <param-name>LogonPage</param-name>
+             <param-value>/index.jsp</param-value>
+         </init-param>
+     </filter>
+     <filter-mapping>
+         <filter-name>securityFilter</filter-name>
+         <url-pattern>*.do</url-pattern>
+     </filter-mapping>-->
+
+    <!--集成Web环境的通用配置：
+    1.般用于加载除Web层的Bean（如DAO、Service等），以便于与其他任何Web框架集成。
+    2.下边两个同时使用
+    -->
+<!--    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:spring/spring-*.xml</param-value>
+    </context-param>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>-->
+
+    <welcome-file-list>
+        <welcome-file>/index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/404.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/500.jsp</location>
+    </error-page>
+
+</web-app>
