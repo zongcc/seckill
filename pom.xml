@@ -61,6 +61,13 @@
 
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.apache.thrift</groupId>
+            <artifactId>libthrift</artifactId>
+            <version>0.10.0</version>
+        </dependency>
+
         <!--spring boot-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

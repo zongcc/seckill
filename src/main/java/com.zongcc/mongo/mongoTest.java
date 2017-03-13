@@ -28,7 +28,8 @@ public class mongoTest {
             //MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));//这里可以使用多个
 
             ServerAddress serverAddress = new ServerAddress("127.0.0.1" , 27017);
-            MongoClientOptions mongoClientOptions = MongoClientOptions.builder().maxWaitTime(1000).writeConcern(WriteConcern.UNACKNOWLEDGED).build();
+            MongoClientOptions mongoClientOptions = MongoClientOptions.builder()
+                    .maxWaitTime(1000).writeConcern(WriteConcern.UNACKNOWLEDGED).build();
             MongoClient mongoClient = new MongoClient(serverAddress,mongoClientOptions);
             mongoClient.getWriteConcern();
 
@@ -37,7 +38,7 @@ public class mongoTest {
             MongoDatabase database = mongoClient.getDatabase("zongcc");
             //链接collections
             MongoCollection<Document> collection = database.getCollection("person");
-            //collection.drop();
+            collection.drop();
             //创建一个限制大小的collcetion
             //database.createCollection("zcc",new CreateCollectionOptions().capped(true).sizeInBytes(0x100000));
 
@@ -75,7 +76,7 @@ public class mongoTest {
             FindIterable<Document> documents = collection.find();
             MongoCursor<Document> iterator = documents.iterator();
             while (iterator.hasNext()){
-                System.out.println(iterator.next());
+                System.out.println("---"+iterator.next());
             }
 
             //设置query查询条件取出第一条
@@ -89,20 +90,25 @@ public class mongoTest {
             Block<Document> printBlock = new Block<Document>() {
                 @Override
                 public void apply(final Document document) {
-                    System.out.println(document.toJson());
+                    System.out.println("==="+document.toJson());
                 }
             };
             collection.find(Filters.gt("count", 90)).forEach(printBlock);
+            System.out.println("====================================================================");
             collection.find(Filters.and(gt("count", 0), Filters.lte("count", 10))).forEach(printBlock);
+            System.out.println("====================================================================");
             collection.find(new Document("count", new Document("$gte", 98))).forEach(printBlock);
+            System.out.println("====================================================================");
             collection.find().projection(new Document("name", 1).append("type", 1).append("count",1).append("_id", 0))
                     .forEach(printBlock);//指定选出那些字段
+            System.out.println("====================================================================");
             collection.find().projection(Projections.fields(Projections.include("name", "type", "versions"), Projections.excludeId()))
                     .forEach(printBlock);
+            System.out.println("====================================================================");
             collection.find().sort(Sorts.ascending("count"))
                     .projection(Projections.fields(Projections.include("name","count", "type")))
                     .forEach(printBlock);
-
+            System.out.println("====================================================================");
             //更新collections数据
             collection.updateOne(Filters.eq("count", 10), new Document("$set", new Document("count", 110)));
             UpdateResult updateResult = collection.updateMany(lt("count", 100), inc("count", 100));

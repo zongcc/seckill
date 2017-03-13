@@ -38,7 +38,7 @@ public class MemcachedClient implements CacheClient {
         builder.setCommandFactory(new BinaryCommandFactory());
         builder.setConnectionPoolSize(CONNECTION_POOL_SIZE);
         // 宕机报警
-        builder.setFailureMode(true);
+        builder.setFailureMode(false);
         this.memcachedClient = builder.build();
         logger.info("++++++++memcached...........init...........success.....");
     }
