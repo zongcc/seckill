@@ -16,7 +16,7 @@ import java.io.IOException;
 
 /**
  * 
- * @author BrianZhao
+ * @author zongcc
  */
 public class JsonMapperUtil {
 
