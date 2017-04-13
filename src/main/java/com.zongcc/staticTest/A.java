@@ -1,5 +1,7 @@
 package com.zongcc.staticTest;
 
+import java.util.HashMap;
+
 /**
  * Created by zongcc on 2017/3/1.
  */
@@ -29,6 +31,8 @@ class A {
     public static void main(String[] args) {
         new B();
         new B();
+        //HashMap-hashset-stringbuffer-stringbuider-concurrenthashmap(get锁)-lock-sychorina-notify-volite-finally-int-integer
+        //comparator-comparable-重构-重载-三范式-索引
     }
 
 }
