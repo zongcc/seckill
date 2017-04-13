@@ -69,6 +69,7 @@ public class ABADemo {
 
     }
 
+    //finally如果有return总是返回3，否则异常返回2，不异常返回1，System.exit(0);直接退出
     public static String finallyTest() {
         try {
             System.out.println("test==================try"); //1011&1010=1010
@@ -76,7 +77,7 @@ public class ABADemo {
             return "1";
         }catch (Exception e){
             System.out.println("test==================catch"); //1011&1010=1010
-            System.exit(0);
+            System.exit(0);//调换异常
             return "2";
         }finally {
             System.out.println("test==================finally"); //1011&1010=1010
