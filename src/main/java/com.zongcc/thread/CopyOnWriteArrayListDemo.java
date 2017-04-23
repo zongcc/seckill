@@ -11,10 +11,19 @@ import java.util.concurrent.*;
 public class CopyOnWriteArrayListDemo {
     public static void main(String[] args) throws Exception {
 
+        String zongcc = "zongcc";
+//        int h = zongcc.hashCode();
+        int h=8;
+        System.out.println("h========"+h);
+        System.out.println("h========"+(h>>>2));
+        System.out.println("h========"+(h>>2));
+        System.out.println("h========"+(h^(h>>>2)));
+
         List<String> a = new ArrayList<String>();
         a.add("a");
         a.add("b");
         a.add("c");
+        a.set(2,"d");
         final CopyOnWriteArrayList<String> list = new CopyOnWriteArrayList<String>(a);
         Thread t = new Thread(new Runnable() {
             int count = -1;
