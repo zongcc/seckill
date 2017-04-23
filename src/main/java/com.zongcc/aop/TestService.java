@@ -6,7 +6,7 @@ package com.zongcc.aop;
 public class TestService {
     public String helloWorld(){
         try {
-            System.out.println("======================helloWorld===============================");
+            System.out.println(getClass().getClassLoader().getClass()+"======================helloWorld===============================");
             //int i = 1/0;
             return "true";
         }catch (Exception e){
