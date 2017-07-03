@@ -44,6 +44,24 @@ public class BinaryTree {
         }
     }
 
+    /** 递归实现中序遍历 */
+    static void midorder(Node p) {
+        if (p != null) {
+            preorder(p.getLeft());
+            visit(p);
+            preorder(p.getRight());
+        }
+    }
+
+    /** 递归实现后序遍历 */
+    static void lastorder(Node p) {
+        if (p != null) {
+            preorder(p.getLeft());
+            preorder(p.getRight());
+            visit(p);
+        }
+    }
+
 
 
     /** 层次遍历*/
@@ -107,6 +125,12 @@ public class BinaryTree {
         System.out.printf("\n");
         swapTree(tree.getRoot());
         display(tree.getRoot());
+        System.out.printf("\n前序遍历：");
+        preorder(tree.getRoot());
+        System.out.printf("\n中序遍历：");
+        midorder(tree.getRoot());
+        System.out.printf("\n后序遍历：");
+        lastorder(tree.getRoot());
     }
 
 }

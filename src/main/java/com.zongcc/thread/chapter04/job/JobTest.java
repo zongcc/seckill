@@ -10,12 +10,12 @@ import java.util.concurrent.CountDownLatch;
 public class JobTest {
     public static void main(String[] args) throws InterruptedException {
         final CountDownLatch downLatch = new CountDownLatch(3);
-        DefaultThreadPool defaultThreadPool = new DefaultThreadPool(2);
+        DefaultThreadPool defaultThreadPool = new DefaultThreadPool(3);
         defaultThreadPool.execute(new Runnable() {
             @Override
             public void run() {
                 for (int i=0;i<100;i++){
-                    System.out.println(Thread.currentThread().getName()+"--"+i);
+                    System.out.println(Thread.currentThread().getName()+"-11-"+i);
                 }
                 //SleepUtils.second(1);
                 downLatch.countDown();
@@ -25,7 +25,7 @@ public class JobTest {
             @Override
             public void run() {
                 for (int i=0;i<100;i++){
-                    System.out.println(Thread.currentThread().getName()+"--"+i);
+                    System.out.println(Thread.currentThread().getName()+"-22-"+i);
                 }
                 //SleepUtils.second(1);
                 downLatch.countDown();
@@ -35,15 +35,15 @@ public class JobTest {
             @Override
             public void run() {
                 for (int i=0;i<100;i++){
-                    System.out.println(Thread.currentThread().getName()+"--"+i);
+                    System.out.println(Thread.currentThread().getName()+"-33-"+i);
                 }
                 //SleepUtils.second(1);
                 downLatch.countDown();
             }
         });
         System.out.println(defaultThreadPool.getJobSize());
-        downLatch.await();
         SleepUtils.second(1);
+        downLatch.await();
         defaultThreadPool.shutdown();
     }
 }
