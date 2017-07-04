@@ -1,4 +1,4 @@
-package com.zongcc.LRC;
+package com.zongcc.LRU;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

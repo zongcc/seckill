@@ -1,4 +1,4 @@
-package com.zongcc.LRC;
+package com.zongcc.LRU;
 
 /**
  * Created by chunchengzong on 2017-03-16.
@@ -25,6 +25,17 @@ public class Main {
         cache.set(5,15);
         for (int i=0;i<7;i++){
             System.out.println(cache.get(i));
+        }
+        System.out.println("===============================================");
+        LRU lru = new LRU(5);
+        lru.set("0","10");
+        lru.set("1","11");
+        lru.set("2","12");
+        lru.set("3","13");
+        lru.set("4","14");
+        lru.set("5","15");
+        for (int i=0;i<7;i++){
+            System.out.println(lru.get(i+""));
         }
     }
 }
