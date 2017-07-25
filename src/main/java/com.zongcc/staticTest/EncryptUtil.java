@@ -316,15 +316,7 @@ public class EncryptUtil {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-//        String v = "lijiahui@sohu-inc.com#123455";
-//        String v2 = EncryptUtil.EncodeCookieValue(v, Constant.KEY);
-//
-//        System.out.println(v2);
-//        System.out.println(EncryptUtil.DecodeCookieValue(v2, Constant.KEY));
 
-        String s = "POST" + "\n" + "Wed, 10 Sep 2014 13:12:56 GMT" + "\n" + "/v1/passports/?email=111@sohu-inc.com&phone=13012349876";
-        String HmacSHA1 = encryptBASE64(encryptHmacSHA1("test", s));
-        System.out.println(HmacSHA1);
     }
 
 }
