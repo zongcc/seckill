@@ -79,7 +79,7 @@ public class Test {
             public void run() {
                 for (int i=0;i<100000000;i++)
                 volatileExample.getIncrement();
-                System.out.println(volatileExample.get());
+                System.out.println("volatileExample "+volatileExample.get());
             }
         });
         System.out.println("time----->"+(System.currentTimeMillis()-start));
@@ -90,16 +90,17 @@ public class Test {
         long start2 = System.currentTimeMillis();
         for (int i=0;i<100000000;i++)
             volatileExample2.getIncrement();
+        System.out.println("volatileExample2 "+volatileExample.get());
         System.out.println("time2----->"+(System.currentTimeMillis()-start2));
 
 
 
         StringBuilder sb = new StringBuilder();
         sb.append("123.126.70.239");
-        sb.append("zh36.sohu.com");
+        sb.append("zh36.163.com");
         sb.append("1");
         sb.append("1");
-        sb.append("kSyWTavkekWXVQRo".substring(8));//删除前八位，只使用后八位签名秘钥（seed总长16位）
+        sb.append("kSyWTavkekWXVQRo".substring(8));
         String mySign = EncryptUtil.EncoderByMD5(sb.toString(), "UTF-8");
         System.out.println("mySign=========="+mySign);
 
