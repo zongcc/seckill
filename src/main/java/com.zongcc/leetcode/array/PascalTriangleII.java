@@ -4,24 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 帕斯卡三角 [[1], [1, 1], [1, 2, 1], [1, 3, 3, 1], [1, 4, 6, 4, 1]]
+ * 帕斯卡三角给出高度直接返回高度的数据列表
  * Created by chunchengzong on 2017-07-25.
  */
-public class PascalTriangle {
+public class PascalTriangleII {
     public static void main(String[] args) {
-        System.out.println(generate(5));
+        System.out.println(generate(6));
     }
 
-    public static List<List<Integer>> generate(int numRows) {
-        List<List<Integer>> allrows = new ArrayList<List<Integer>>();
+    public static List<Integer> generate(int numRows) {
         ArrayList<Integer> row = new ArrayList<Integer>();
         for(int i=0;i<numRows;i++)
         {
             row.add(0, 1);
             for(int j=1;j<row.size()-1;j++)
                 row.set(j, row.get(j)+row.get(j+1));
-            allrows.add(new ArrayList<Integer>(row));
         }
-        return allrows;
+        return row;
     }
 }

@@ -30,24 +30,25 @@ public class Test {
         //System.out.println("asdfasdfads  "+Integer.valueOf(str));
        // System.out.println("asdfasdfads  "+ new Integer(str));
 
-        String path = "C:\\Users\\chunchengzong\\Desktop\\ads_20170719.tsv";
+        String path = "C:\\Users\\chunchengzong\\Desktop\\keys.txt";
         BufferedReader br = null;
         try {
             File file = new File(path);
             //if(file.exists()) file.delete();
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "utf-8"));
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
 
             String line = br.readLine();
             while (StringUtils.isNotBlank(line)) {
                 //System.out.println("======"+line);
-                String[] array = line.split("\t");
-                System.out.println("======"+array[0]);
-                System.out.println("======"+array[1]);
-                System.out.println("======"+array[2]);
-                System.out.println("======"+array[3]);
-                System.out.println("======"+array[4]);
-                System.out.println("======"+array[5]);
-                System.out.println("======"+array[6]);
+//                String[] array = line.split("\t");
+//                System.out.println("======"+array[0]);
+//                System.out.println("======"+array[1]);
+//                System.out.println("======"+array[2]);
+//                System.out.println("======"+array[3]);
+//                System.out.println("======"+array[4]);
+//                System.out.println("======"+array[5]);
+//                System.out.println("======"+array[6]);
+                System.out.println("======"+line);
 
                 System.out.println("++++++++++++++++++++++++++++");
                 line = br.readLine();
