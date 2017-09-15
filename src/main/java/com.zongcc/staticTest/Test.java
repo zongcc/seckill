@@ -1,22 +1,50 @@
 package com.zongcc.staticTest;
 
+import com.glaforge.i18n.io.CharsetToolkit;
+import com.zongcc.encodingDetector.Icu4jEncodeDetector;
+import com.zongcc.utils.CaculateUtil;
+import com.zongcc.utils.DateUtil;
+import org.apache.any23.encoding.TikaEncodingDetector;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 
+import java.io.*;
 import java.math.BigDecimal;
+import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by chunchengzong on 2017-05-09.
  */
 public class Test {
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) throws ParseException, IOException {
+
+        String costStr = CaculateUtil.getLongDivide(36013528L,100000L,5);
+        Double costDouble = 0D;
+        Double cost = 108.38328D+251.75200D;
+        if(StringUtils.isNotBlank(costStr)){
+            costDouble = Double.valueOf(costStr);
+        }
+        if (!costDouble.equals(cost)) {
+            System.out.println("costDouble =========不想动相等");
+        }else {
+            System.out.println("costDouble =========相等");
+        }
+
+
+
+        SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd HH");
+        System.out.println(sdf.format(new Date())+":00:00");
+
 
         /*
         计算操作
@@ -110,5 +138,59 @@ public class Test {
         Date date = DateUtils.parseDate(dateStr,new String[]{"yyyy-MM-dd"});
         System.out.println("============================"+current.equals(date));
 
+        Pattern pattern = Pattern.compile("^[\\u4E00-\\u9FA5A-Za-z0-9]+$");
+        Matcher matcher = pattern.matcher("海贼王12Vv。。");
+        System.out.println("中文、英文、数字但不包括下划线等符号 " +matcher.matches());
+
+        String regEx="[^0-9]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher matchers = p.matcher("ads_20170830_difff.tsv");
+        Date dateTime= DateUtil.str2date(matchers.replaceAll("").trim(), "yyyyMMdd");
+        System.out.println("------------"+DateUtil.date2str(dateTime));
+
+
+
+        System.out.println("=======================================================================");
+        File file = new File("C:\\Users\\chunchengzong\\Desktop\\test.txt");
+        //BufferedInputStream in = new BufferedInputStream(new FileInputStream(file));
+        FileInputStream ins = new FileInputStream(file);
+        FileInputStream in = new FileInputStream(file);
+        //BufferedInputStream in = new BufferedInputStream(new FileInputStream(file));
+        String code = "GBK";
+        /*if (bb[0] == -17 && bb[1] == -69 && bb[2] == -65){
+            code = "UTF-8";
+        }*/
+        //String charset =  FileCharsetUtil.getFileEncode(in);
+        //Charset charset =  Charset.forName(new TikaEncodingDetector().guessEncoding(in));
+        //Charset charset =  CharsetToolkit.guessEncoding(file, 4096);
+        //BufferedReader bufferedReader = new BufferedReader(new UnicodeReader(ins,charset));
+        //BufferedReader bufferedReader = new BufferedReader(new UnicodeReader(ins,charset.name()));
+        BufferedReader bufferedReader = new BufferedReader(new UnicodeReader(ins,FileCharsetUtil.getFileEncode(in)));
+        //InputStreamReader inputStreamReader = new InputStreamReader(in,code);
+        //BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+//        String str = bufferedReader.readLine();
+//        while(str != null){
+//            System.out.println(str.trim());
+//            str = bufferedReader.readLine();
+//        }
+
+        Pattern patterns = Pattern.compile("^[\\u4E00-\\u9FA5A-Za-z0-9]+$");
+        String line = bufferedReader.readLine();
+        while (StringUtils.isNotBlank(line)) {
+            if(patterns.matcher(line).matches()){
+                System.out.println("正常字符 "+line);
+                line = bufferedReader.readLine();
+            }else {
+                System.out.println("特殊字符 "+line);
+                break;
+            }
+        }
+        in.close();
+        bufferedReader.close();
+
+        FileInputStream inst = new FileInputStream(file);
+        System.out.println("文件编码 " + Charset.forName(new TikaEncodingDetector().guessEncoding(inst)));
+
     }
+
 }

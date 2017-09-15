@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -16,6 +17,26 @@ public class Test {
 
     public static void main(String[] args) throws InterruptedException {
         //String path = "/opt/project/mp.xlsx";
+
+        Double dob = 566666.6667D;
+        Long lg = 566666L;
+        System.out.println(dob.doubleValue());
+        System.out.println(dob.longValue());
+        System.out.println(lg.doubleValue());
+        System.out.println(lg.longValue());
+
+        List<Integer> pAccounts = new ArrayList<Integer>();
+        List<Integer> allAccounts = new ArrayList<Integer>();
+        allAccounts.add(1);
+        allAccounts.add(2);
+        allAccounts.add(3);
+        allAccounts.add(4);
+        allAccounts.add(5);
+        pAccounts.add(1);
+        pAccounts.add(2);
+        pAccounts.add(3);
+        allAccounts.removeAll(pAccounts);
+        System.out.println("----------------"+allAccounts.toString());
 
         Date yesterDay = DateUtil.addDays(new Date(),-1);
         String date = DateUtil.date2str(yesterDay,"yyyyMMdd");
@@ -92,7 +113,7 @@ public class Test {
     private static void excuteMethod(int i) throws InterruptedException {
         if(i==2){
             Thread.sleep(100);
-            int j = 1/0;
+            int j = 1/1;
         }else {
             Thread.sleep(100);
         }

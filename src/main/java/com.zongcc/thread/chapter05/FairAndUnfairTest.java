@@ -83,7 +83,7 @@ public class FairAndUnfairTest {
     public static void main(String[] args) {
         FairAndUnfairTest test = new FairAndUnfairTest();
         test.fair();
-        SleepUtils.second(30);
+        SleepUtils.second(12);
         System.out.println("============================");
         test.unfair();
     }
