@@ -5,7 +5,9 @@ import com.zongcc.encodingDetector.Icu4jEncodeDetector;
 import com.zongcc.utils.CaculateUtil;
 import com.zongcc.utils.DateUtil;
 import org.apache.any23.encoding.TikaEncodingDetector;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.lang.time.DateUtils;
 
 import java.io.*;
@@ -13,10 +15,7 @@ import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
@@ -26,6 +25,7 @@ import java.util.regex.Pattern;
  * Created by chunchengzong on 2017-05-09.
  */
 public class Test {
+
     public static void main(String[] args) throws ParseException, IOException {
 
         String costStr = CaculateUtil.getLongDivide(36013528L,100000L,5);
