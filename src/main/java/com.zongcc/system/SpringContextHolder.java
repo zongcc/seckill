@@ -1,10 +1,12 @@
-package com.zongcc.controller;
+package com.zongcc.system;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-
+/**
+ *必须在web.xml中设置相关ContextLoaderListener
+ */
 public class SpringContextHolder implements ApplicationContextAware {
 
 	private  static ApplicationContext applicationContext;

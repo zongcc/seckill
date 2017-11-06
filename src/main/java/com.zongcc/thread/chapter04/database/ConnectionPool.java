@@ -21,17 +21,17 @@ public class ConnectionPool {
     public void releaseConnection(Connection connection) {
         if (connection != null) {
             synchronized (pool) {
-                // ��Ӻ���Ҫ����֪ͨ�����������������ܹ���֪�����ӳ����Ѿ��黹��һ������
+                // 连接释放后需要进行通知，这样其他消费者能够感知到连接池中已经归还了一个连接
                 pool.addLast(connection);
                 pool.notifyAll();
             }
         }
     }
 
-    // ��mills���޷���ȡ�����ӣ����᷵��null
+    // 在mills内无法获取到连接，将会返回null
     public Connection fetchConnection(long mills) throws InterruptedException {
         synchronized (pool) {
-            // ��ȫ��ʱ
+            // 完全超时
             if (mills <= 0) {
                 while (pool.isEmpty()) {
                     pool.wait();

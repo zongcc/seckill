@@ -45,7 +45,7 @@
 -->
             </context:component-scan>
 
-    <bean class="com.zongcc.controller.SpringContextHolder"></bean>
+    <bean class="com.zongcc.system.SpringContextHolder"></bean>
 
     <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
         <property name="resourceLoaderPath" value="/WEB-INF/template" />

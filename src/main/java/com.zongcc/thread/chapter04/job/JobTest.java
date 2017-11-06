@@ -9,41 +9,52 @@ import java.util.concurrent.CountDownLatch;
  */
 public class JobTest {
     public static void main(String[] args) throws InterruptedException {
-        final CountDownLatch downLatch = new CountDownLatch(3);
+        final CountDownLatch downLatch = new CountDownLatch(1);
         DefaultThreadPool defaultThreadPool = new DefaultThreadPool(3);
         defaultThreadPool.execute(new Runnable() {
             @Override
             public void run() {
+                try {
+                    downLatch.await();
+                } catch (InterruptedException e) {
+
+                }
                 for (int i=0;i<100;i++){
                     System.out.println(Thread.currentThread().getName()+"-11-"+i);
                 }
-                //SleepUtils.second(1);
-                downLatch.countDown();
+
             }
         });
         defaultThreadPool.execute(new Runnable() {
             @Override
             public void run() {
+                try {
+                    downLatch.await();
+                } catch (InterruptedException e) {
+
+                }
                 for (int i=0;i<100;i++){
                     System.out.println(Thread.currentThread().getName()+"-22-"+i);
                 }
-                //SleepUtils.second(1);
-                downLatch.countDown();
             }
         });
         defaultThreadPool.execute(new Runnable() {
             @Override
             public void run() {
+                try {
+                    downLatch.await();
+                } catch (InterruptedException e) {
+
+                }
                 for (int i=0;i<100;i++){
                     System.out.println(Thread.currentThread().getName()+"-33-"+i);
                 }
-                //SleepUtils.second(1);
-                downLatch.countDown();
             }
         });
-        System.out.println(defaultThreadPool.getJobSize());
-        SleepUtils.second(1);
-        downLatch.await();
+        System.out.println("Job数量： "+defaultThreadPool.getJobSize());
+        SleepUtils.second(10);
+        System.out.println("main end ...............................................................");
+        downLatch.countDown();
         defaultThreadPool.shutdown();
     }
 }

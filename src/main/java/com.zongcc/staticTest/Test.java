@@ -1,10 +1,14 @@
 package com.zongcc.staticTest;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.glaforge.i18n.io.CharsetToolkit;
 import com.zongcc.encodingDetector.Icu4jEncodeDetector;
+import com.zongcc.model.Seckill;
 import com.zongcc.utils.CaculateUtil;
 import com.zongcc.utils.DateUtil;
+import com.zongcc.utils.JacksonUtil;
 import org.apache.any23.encoding.TikaEncodingDetector;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
@@ -27,6 +31,24 @@ import java.util.regex.Pattern;
 public class Test {
 
     public static void main(String[] args) throws ParseException, IOException {
+
+        List list = new ArrayList<Seckill>();
+        Seckill seckill = new Seckill();
+        seckill.setName("test");
+        seckill.setCreateTime(new Date());
+        seckill.setNumber(1);
+        list.add(seckill);
+        String str = JacksonUtil.toJson(list);
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(str.getBytes());
+
+        byte[] bytes = IOUtils.toByteArray(byteArrayInputStream);
+        List<Seckill> seckills = JacksonUtil.toCollection(new String(bytes), new TypeReference<List<Seckill>>() {});
+        for(Seckill s:seckills){
+            System.out.println("out object ========"+s.getName());
+        }
+
+        //获取系统类型
+        System.out.println("-----os name--------"+System.getProperty("os.name"));
 
         String costStr = CaculateUtil.getLongDivide(36013528L,100000L,5);
         Double costDouble = 0D;
