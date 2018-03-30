@@ -223,7 +223,7 @@ public class CaculateUtil {
      * @return 四舍五入后的结果，以字符串格式返回
      */
     public static String round(String v, int scale) {
-        return round(v, scale, BigDecimal.ROUND_HALF_EVEN);
+        return round(v, scale, BigDecimal.ROUND_HALF_UP);
     }
 
     /**
