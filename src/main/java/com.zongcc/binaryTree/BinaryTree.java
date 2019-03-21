@@ -125,10 +125,13 @@ public class BinaryTree {
         System.out.printf("\n");
         swapTree(tree.getRoot());
         display(tree.getRoot());
+        // 中左右
         System.out.printf("\n前序遍历：");
         preorder(tree.getRoot());
+        // 左中右
         System.out.printf("\n中序遍历：");
         midorder(tree.getRoot());
+        // 左右中
         System.out.printf("\n后序遍历：");
         lastorder(tree.getRoot());
     }

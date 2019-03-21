@@ -4,6 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class DateUtil {
@@ -12,6 +13,8 @@ public class DateUtil {
      * Default date pattern
      */
     public static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd";
+    public static final String DEFAULT_DATE_HOUR_MINUTE_PATTERN = "yyyy-MM-dd HH:mm:";
+    public static final String GENERAL_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
     /**
      * is date string
@@ -237,5 +240,17 @@ public class DateUtil {
 
     public static long day(long mil) {
         return (long) Math.ceil(mil / (1000 * 60 * 60 * 24.0));
+    }
+
+    /**
+     * 获取当前时间是第几个小时
+     *
+     * @param date
+     * @return
+     */
+    public static int getHourOfDate(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.HOUR_OF_DAY);
     }
 }

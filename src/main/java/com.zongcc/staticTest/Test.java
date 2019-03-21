@@ -1,30 +1,16 @@
 package com.zongcc.staticTest;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.zongcc.model.Seckill;
 import com.zongcc.utils.CaculateUtil;
 import com.zongcc.utils.DateUtil;
-import com.zongcc.utils.JacksonUtil;
-import org.apache.any23.encoding.TikaEncodingDetector;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.math.BigDecimal;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created by chunchengzong on 2017-05-09.
@@ -32,6 +18,7 @@ import java.util.regex.Pattern;
 public class Test {
     private static Logger logger = LoggerFactory.getLogger(Test.class);
 
+    //更新map内容Integer
     public static void updateMap(Map<Integer, Long> map, Integer key, Long value) {
         Long aLong = map.get(key);
         if (null != aLong) {
@@ -41,7 +28,8 @@ public class Test {
         }
     }
 
-    public static Boolean exceptionMethod()throws IOException {
+    //try catch finally
+    public static Boolean exceptionMethod() throws IOException {
         try {
             int i = 1 / 0;
             TimeUnit.SECONDS.sleep(1);
@@ -60,38 +48,404 @@ public class Test {
         return i + 10;
     }
 
-
-    public static List<Integer> removeElements(List<Integer> src,List<Integer> oth){
+    //两个列表，一个删除另一个列表（高效）
+    public static List<Integer> removeElements(List<Integer> src, List<Integer> oth) {
         LinkedList result = new LinkedList(src);//大集合用linkedlist
         HashSet othHash = new HashSet(oth);//小集合用hashset
         Iterator iter = result.iterator();//采用Iterator迭代器进行数据的操作
-        while(iter.hasNext()){
-            if(othHash.contains(iter.next())){
+        while (iter.hasNext()) {
+            if (othHash.contains(iter.next())) {
                 iter.remove();
             }
         }
+        Collections.reverse(result);
         return result;
     }
+
+    //ABA问题解决方式
+    static class TestThread implements Runnable {
+
+        private Map<Integer, AtomicLong> consumeMap;
+
+        TestThread(Map consumeMap) {
+            this.consumeMap = consumeMap;
+        }
+
+        @Override
+        public void run() {
+            //System.out.println(this);
+            //synchronized(consumeMap){
+            AtomicLong aLong = consumeMap.get(1);
+            System.out.println(aLong);
+            if (null != aLong) {
+                consumeMap.put(1, new AtomicLong(aLong.addAndGet(1)));
+            } else {
+                consumeMap.put(1, new AtomicLong(0));
+            }
+            //}
+        }
+    }
+
+    static class Node {
+        private Integer id;
+        private Integer status;
+        private Integer parentId;
+        private String reason;
+
+        public Node(Integer id, Integer status, Integer parentId, String reason) {
+            this.id = id;
+            this.status = status;
+            this.parentId = parentId;
+            this.reason = reason;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
+
+        public Integer getStatus() {
+            return status;
+        }
+
+        public void setStatus(Integer status) {
+            this.status = status;
+        }
+
+        public Integer getParentId() {
+            return parentId;
+        }
+
+        public void setParentId(Integer parentId) {
+            this.parentId = parentId;
+        }
+
+        public String getReason() {
+            return reason;
+        }
+
+        public void setReason(String reason) {
+            this.reason = reason;
+        }
+
+        @Override
+        public String toString() {
+            return "Node{" +
+                    "id=" + id +
+                    ", status=" + status +
+                    ", parentId=" + parentId +
+                    ", reason=" + reason +
+                    '}';
+        }
+    }
+
 
     public static void main(String[] args) throws ParseException, IOException, ExecutionException, InterruptedException,
             InvocationTargetException, IllegalAccessException {
 
-        Process process = null;
-        long timeLong = System.currentTimeMillis();
-        //phantomjs js params
-        String cmdPrefix = null;
-        if(timeLong % 5 == 0){
-            cmdPrefix = "/opt/phantomjs/bin/phantomjs /opt/phantomjs/mult/screenshot.fill.mult.js";
-        }else if(timeLong % 5 == 1){
-            cmdPrefix = "/data/phantomjs-v2/bin/phantomjs /data/phantomjs-v2/mult/screenshot.fill.mult.js";
-        }else if(timeLong % 5 == 2){
-            cmdPrefix = "/data/phantomjs-v3/bin/phantomjs /data/phantomjs-v3/mult/screenshot.fill.mult.js";
-        }else if(timeLong % 5 == 3){
-            cmdPrefix = "/data/phantomjs-v4/bin/phantomjs /data/phantomjs-v4/mult/screenshot.fill.mult.js";
-        }else if(timeLong % 5 == 4){
-            cmdPrefix = "/data/phantomjs-v5/bin/phantomjs /data/phantomjs-v5/mult/screenshot.fill.mult.js";
+        String imageUrl = "http://643108e7617ef.cdn.sohucs.com/03c5793ce4f048b482431a11164e5faa.jpg";
+        if (imageUrl.contains("643108e7617ef.cdn.sohucs.com")) {
+            imageUrl = imageUrl.replaceFirst("643108e7617ef.cdn.sohucs.com", "deliver.bjcnc.scs.sohucs.com");
         }
-        System.out.println("==================="+cmdPrefix);
+        System.out.println("imageUrl===========>" + imageUrl);
+
+        String taold = "广告素材批量审核通过:[100000774, 100000777, 100000775, 100000776, 100000768, 100000771, 100000769]";
+        Integer creativeSetid = 100000777;
+        if (taold.contains(creativeSetid.toString())) {
+            System.out.println("------------------------------------>");
+        }
+
+        System.out.println("5|9===========>" + (5 | 9));
+
+        List<Integer> alist = new ArrayList<>();
+/*        alist.add(1);alist.add(2);
+        alist.add(3);  */
+        List<Integer> blist = new ArrayList<>();
+/*        blist.add(2);
+        blist.add(3);*/
+        blist.removeAll(alist);
+        System.out.println("------------------->" + blist.toString());
+
+
+        //String intern方法
+        Date now = new Date();
+        System.out.println(DateUtil.date2str(now, DateUtil.DEFAULT_DATE_PATTERN));
+
+        String s1 = new String("1");
+        s1.intern();
+        String s2 = "1";
+        System.out.println(s1 == s2);
+
+        String s3 = new String("1") + new String("1");
+        s3.intern();
+        String s4 = "11";
+        System.out.println(s3 == s4);
+        System.out.println(s3.intern() == s4.intern());
+
+        //格式化时间
+        String time = "2018-08-08";
+        Date dataTime = DateUtil.str2date(time, "yyyy-MM-dd");
+        String startTime = DateUtil.date2str(dataTime, "yyyy-MM-dd") + " 00:00:00";
+        String endTime = DateUtil.date2str(dataTime, "yyyy-MM-dd") + " 23:59:59";
+        System.out.println("dataTime======================" + dataTime + " " + startTime + " " + endTime);
+
+        //开始时间和结束时间，24时格式显示
+        Date start = DateUtil.str2date("2018-08-14 00:00:00", DateUtil.GENERAL_DATE_PATTERN);
+        Date end = DateUtil.str2date("2018-08-14 23:59:59", DateUtil.GENERAL_DATE_PATTERN);
+        int s = DateUtil.getHourOfDate(start);
+        int e = DateUtil.getHourOfDate(end);
+        List<Integer> list = new ArrayList<>();
+        for (int i = s; i <= e; i++) {
+            list.add(i);
+        }
+        System.out.println(list);
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < 24; i++) {
+            boolean f = false;
+            for (int j = 0; j < list.size(); j++) {
+                if (i == list.get(j)) {
+                    sb.append(1);
+                    f = true;
+                }
+            }
+            if (!f) sb.append(0);
+        }
+        System.out.println(Integer.parseInt(sb.toString(), 2));
+
+        //二进制转化十进制或运算
+        int ds = Integer.parseInt("000000000000000000000000", 2);
+        int dm = Integer.parseInt("10", 2);
+        int dd = ds | dm;
+        System.out.println(Integer.toBinaryString(dd));
+        String toBinaryString= Integer.toBinaryString(dd);
+        int length = toBinaryString.length();
+        StringBuffer sba = new StringBuffer();
+        for(int i=0;i<(24-length);i++){
+            sba.append("0");
+        }
+        System.out.println(sba.toString()+toBinaryString);
+
+
+        //队列删除重复数字（保留第一个）
+        LinkedList<Integer> linkedList = new LinkedList<>();
+        linkedList.add(0);
+        linkedList.add(0);
+        linkedList.add(1);
+        linkedList.add(0);
+        linkedList.add(1);
+        linkedList.add(1);
+        linkedList.add(0);
+        System.out.println(linkedList);
+
+        LinkedList<Integer> resultList = new LinkedList<>();
+        for (int i = 0; i < linkedList.size(); i++) {
+            for (int j = i + 1; j < linkedList.size(); j++) {
+                if (!linkedList.get(i).equals(linkedList.get(j))) {
+                    resultList.add(linkedList.get(i));
+                    i = j - 1;
+                    break;
+                }
+            }
+            if (i + 1 >= linkedList.size()) {
+                resultList.add(linkedList.get(i));
+            }
+        }
+        System.out.println(resultList);
+
+        //配对开始结束时间
+        List<String> listStr = new ArrayList<String>();
+        for (int i = 0; i < resultList.size(); i++) {
+            boolean f = false;
+            if (resultList.get(i) == 1 && i == 0) {
+                listStr.add("0点到1");
+                continue;
+            }
+            int j = i + 1;
+            if (j < resultList.size()) {
+                listStr.add(resultList.get(i) + ":" + resultList.get(j));
+                f = true;
+                i = j;
+            }
+            if (!f) {
+                if (resultList.get(i) == 0) {
+                    listStr.add(resultList.get(i) + ":最后一秒");
+                }
+            }
+        }
+        for (int k = 0; k < listStr.size(); k++) {
+            System.out.println(listStr.get(k));
+        }
+
+
+        LinkedList<Node> nodeList = new LinkedList<Node>();
+        nodeList.add(new Node(11, 0, 0,""));
+        nodeList.add(new Node(1, 1, 0,"A"));
+        nodeList.add(new Node(3, 1, 0,"B"));
+        nodeList.add(new Node(31, 1, 0,"B1"));
+        nodeList.add(new Node(32, 1, 0,"B2"));
+        nodeList.add(new Node(33, 1, 0,"B3"));
+        nodeList.add(new Node(4, 0, 0,""));
+        nodeList.add(new Node(5, 1, 0,"D"));
+        nodeList.add(new Node(6, 0, 0,""));
+        nodeList.add(new Node(61, 0, 0,""));
+        nodeList.add(new Node(7, 1, 0,"G"));
+        nodeList.add(new Node(8, 1, 0,"H"));
+        nodeList.add(new Node(9, 0, 0,""));
+        System.out.println("----->" + nodeList);
+
+//        List<Integer> removeIds = new ArrayList<Integer>();
+//        for (int i = 0; i < nodeList.size(); i++) {
+//            Integer parentId = nodeList.get(i).getParentId();
+//            Integer id = nodeList.get(i).getId();
+//            if (parentId != 0) {
+//                for (int j = i - 1; j >= 0; j--) {
+//                    Node node = nodeList.get(j);
+//                    if (node.getStatus() == 0 && !parentId.equals(node.getId())) {
+//                        removeIds.add(id);
+//                        break;
+//                    }
+//                    if(node.getStatus() == 0){
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+//        System.out.println("------------->" + removeIds);
+//
+//        Iterator<Node> iterator = nodeList.iterator();
+//        while (iterator.hasNext()){
+//            Integer id = iterator.next().getId();
+//            if (removeIds.contains(id)){
+//                iterator.remove();
+//            }
+//        }
+//        System.out.println(nodeList);
+        LinkedList<Node> resultList2 = new LinkedList<Node>();
+        for (int i = 0; i < nodeList.size(); i++) {
+            for (int j = i + 1; j <= nodeList.size(); j++) {
+                if (j == nodeList.size() || !nodeList.get(i).getStatus().equals(nodeList.get(j).getStatus())) {
+                    resultList2.add(nodeList.get(i));
+                    i = j - 1;
+                    break;
+                }else {
+                    Node nodei = nodeList.get(i);
+                    String nodej = nodeList.get(j).getReason();
+                    nodei.setReason(nodei.getReason() + " " + nodej );
+                }
+            }
+        }
+        System.out.println(resultList2);
+
+//        Process process = null;
+//        long timeLong = System.currentTimeMillis();
+//        //phantomjs js params
+//        String cmdPrefix = null;
+//        if(timeLong % 5 == 0){
+//            cmdPrefix = "/opt/phantomjs/bin/phantomjs /opt/phantomjs/mult/screenshot.fill.mult.js";
+//        }else if(timeLong % 5 == 1){
+//            cmdPrefix = "/data/phantomjs-v2/bin/phantomjs /data/phantomjs-v2/mult/screenshot.fill.mult.js";
+//        }else if(timeLong % 5 == 2){
+//            cmdPrefix = "/data/phantomjs-v3/bin/phantomjs /data/phantomjs-v3/mult/screenshot.fill.mult.js";
+//        }else if(timeLong % 5 == 3){
+//            cmdPrefix = "/data/phantomjs-v4/bin/phantomjs /data/phantomjs-v4/mult/screenshot.fill.mult.js";
+//        }else if(timeLong % 5 == 4){
+//            cmdPrefix = "/data/phantomjs-v5/bin/phantomjs /data/phantomjs-v5/mult/screenshot.fill.mult.js";
+//        }
+//        System.out.println("==================="+cmdPrefix);
+//
+//        LinkedList<Integer> linked = new LinkedList<>();
+//        linked.add(1);
+//        linked.add(2);
+//        linked.add(3);
+//        linked.add(4);
+//        linked.add(5);
+//        List a = new ArrayList();
+//        List b = new ArrayList();
+//        a.removeAll(b);
+//        ListIterator fwd = linked.listIterator();
+//        ListIterator rev = linked.listIterator(linked.size());
+//        for (int i=0, mid=linked.size()>>1; i<mid; i++) {
+//            Object tmp = fwd.next();
+//            System.out.println(tmp);
+//            fwd.set(rev.previous());
+//            rev.set(tmp);
+//        }
+//
+//
+//        System.out.println(linked);
+//        System.out.println(linked.getLast());
+//        Collections.reverse(linked);
+//        System.out.println(linked);
+//
+//
+//        Map<Integer,Integer> map = new HashMap<>();
+//        map.put(1,11);
+//        map.put(2,22);
+//        map.put(3,33);
+//        map.put(4,44);
+//        map.put(5,55);
+//        map.put(1,66);
+//        System.out.println("----------"+map.values());
+//        final ConcurrentHashMap<Integer, AtomicLong> consumeMap = new ConcurrentHashMap<Integer, AtomicLong>();
+//        TestThread t = new TestThread(consumeMap);
+//        ExecutorService pool = Executors.newFixedThreadPool(8);
+//        for (int i = 0; i < 10000; i++) {
+//            int finalI = i;
+//            pool.submit(t);
+//        }
+//        //System.out.println("=====1=2=22==="+consumeMap);
+//        pool.shutdown();
+//
+//        while (true) {
+//            if (pool.isTerminated()) {
+//
+//                System.out.println("=====1=2=22===" + consumeMap);
+//                break;
+//            }
+//            try {
+//                Thread.sleep(2000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//
+//        int endIndex = 154440805;
+//        int lastIndex = 154445805;
+//        List<Integer> indexList = new ArrayList<>();
+//        do {
+//            endIndex += 100000;
+//            if (endIndex >= lastIndex) {
+//                endIndex = lastIndex;
+//                indexList.add(endIndex);
+//                break;
+//            }
+//            indexList.add(endIndex);
+//        } while (endIndex <= lastIndex);
+//        System.out.println(indexList);
+//        int startIndex = 327675;
+//        ExecutorService pool = Executors.newFixedThreadPool(8);
+//        for (Integer i : indexList) {
+//            int finalStartIndex = startIndex;
+//            pool.submit(new Runnable() {
+//                @Override
+//                public void run() {
+//                    synchronized(consumeMap){
+//                        AtomicLong aLong = consumeMap.get(1);
+//                        System.out.println(aLong);
+//                        if (null != aLong) {
+//                            consumeMap.put(1, new AtomicLong(aLong.addAndGet(1)));
+//                        } else {
+//                            consumeMap.put(1, new AtomicLong(0));
+//                        }
+//                    }
+//                }
+//            });
+//            startIndex = i;
+//        }
 
 //        List<Integer> aaaList = new ArrayList<>();
 //        List<Integer> bbbList = new ArrayList<>();

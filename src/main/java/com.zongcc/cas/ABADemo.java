@@ -77,7 +77,7 @@ public class ABADemo {
             return "1";
         }catch (Exception e){
             System.out.println("test==================catch"); //1011&1010=1010
-            System.exit(0);//调换异常
+            System.exit(0);//调换异常程序退出,不执行finally,没有返回
             return "2";
         }finally {
             System.out.println("test==================finally"); //1011&1010=1010
